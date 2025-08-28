@@ -1,29 +1,45 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Panel ESP32</title>
+<meta charset="UTF-8">
+<title>Panel de Control ESP32</title>
+<style>
+  body { font-family: Arial; text-align: center; }
+  button { margin: 5px; padding: 10px 20px; font-size: 16px; }
+</style>
 </head>
 <body>
-  <h1>Control del ESP32</h1>
+<h1>Control Remoto</h1>
 
-  <button onclick="publish('led-status', 1)">Encender LED</button>
-  <button onclick="publish('led-status', 0)">Apagar LED</button>
+<div>
+  <h2>Iluminación 1</h2>
+  <button onclick="sendCmd('iluminacion-1', 1)">Encender</button>
+  <button onclick="sendCmd('iluminacion-1', 0)">Apagar</button>
+</div>
+<div>
+  <h2>Iluminación 2</h2>
+  <button onclick="sendCmd('iluminacion-2', 1)">Encender</button>
+  <button onclick="sendCmd('iluminacion-2', 0)">Apagar</button>
+</div>
+<div>
+  <h2>Ventilador 1</h2>
+  <button onclick="sendCmd('ventilador-1', 1)">Encender</button>
+  <button onclick="sendCmd('ventilador-1', 0)">Apagar</button>
+</div>
+<div>
+  <h2>Ventilador 2</h2>
+  <button onclick="sendCmd('ventilador-2', 1)">Encender</button>
+  <button onclick="sendCmd('ventilador-2', 0)">Apagar</button>
+</div>
 
-  <script>
-    async function publish(topic, value) {
-      try {
-        const resp = await fetch("/api/publish", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ topic, value })
-        });
-        if (!resp.ok) throw new Error(await resp.text());
-        console.log(`Publicado ${value} en ${topic}`);
-      } catch (err) {
-        console.error("Error publicando:", err);
-      }
-    }
-  </script>
+<script>
+async function sendCmd(topic, value) {
+  await fetch("/api/publish", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ topic, value })
+  });
+}
+</script>
 </body>
 </html>
