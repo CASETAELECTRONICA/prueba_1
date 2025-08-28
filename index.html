@@ -1,20 +1,29 @@
-<script>
-async function publish(topic, value) {
-  try {
-    const resp = await fetch("/api/publish", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ topic, value })
-    });
-    if (!resp.ok) throw new Error(await resp.text());
-    console.log(`Publicado ${value} en ${topic}`);
-  } catch (err) {
-    console.error("Error publicando:", err);
-  }
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel ESP32</title>
+</head>
+<body>
+  <h1>Control del ESP32</h1>
 
-// Ejemplo de uso:
-document.getElementById("btn-led").addEventListener("click", () => {
-  publish("led-status", 1);
-});
-</script>
+  <button onclick="publish('led-status', 1)">Encender LED</button>
+  <button onclick="publish('led-status', 0)">Apagar LED</button>
+
+  <script>
+    async function publish(topic, value) {
+      try {
+        const resp = await fetch("/api/publish", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ topic, value })
+        });
+        if (!resp.ok) throw new Error(await resp.text());
+        console.log(`Publicado ${value} en ${topic}`);
+      } catch (err) {
+        console.error("Error publicando:", err);
+      }
+    }
+  </script>
+</body>
+</html>
